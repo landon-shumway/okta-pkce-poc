@@ -23,15 +23,10 @@ const Navbar = ({ setCorsErrorModalOpen }) => {
 
   const login = async () => oktaAuth.signInWithRedirect();
 
-  const logout = async () => {
+  const logout = async (idToken) => {
     try {
-      await oktaAuth.signOut();
+      // call server endpoint to call logout url with id token
     } catch (err) {
-      if (isCorsError(err)) {
-        setCorsErrorModalOpen(true);
-      } else {
-        throw err;
-      }
     }
   };
 
@@ -56,7 +51,7 @@ const Navbar = ({ setCorsErrorModalOpen }) => {
             </Menu.Item>
           )}
           {authState.isAuthenticated && (
-            <Menu.Item id="logout-button" onClick={logout}>Logout</Menu.Item>
+            <Menu.Item id="logout-button" onClick={logout(authState.idToken)}>Logout</Menu.Item>
           )}
           {!authState.isPending && !authState.isAuthenticated && (
             <Menu.Item onClick={login}>Login</Menu.Item>
